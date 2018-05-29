@@ -1,0 +1,267 @@
+#include "Riostream.h"
+#include "TTree.h"
+#include <vector>
+#include "TMath.h"
+#include <string>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+using namespace std;
+
+// Variaveis Globais
+////////////////////////
+TH1D *El_on_ElCh[7];
+TH1D *Pr_on_PrCh[10];
+
+char part_el = 'e';
+char part_pr = 'p';
+int i = 0;
+////////////////////////
+
+void help(){
+  cout << "Chama a \"Fill_TH1Ds()\" primeiro" << endl;
+  cout << "Funcao(particula/canal, #canal), ex:" << endl;
+  cout << "Print_FRs('e',1) ou Print_FRs('p',5)" << endl;
+}
+
+void Fill_TH1Ds(){
+
+  ////////////////////////////
+ //////// Electroes /////////
+////////////////////////////
+
+  TFile *FRel = new TFile("/home/cosmo/maximo/rootstuff/funcao_resposta/test_Electrons_RFToT_3.root");
+
+  El_on_ElCh[0] = (TH1D*)FRel->Get("heElectronsOrigCh1");
+  El_on_ElCh[1] = (TH1D*)FRel->Get("heElectronsOrigCh2");
+  El_on_ElCh[2] = (TH1D*)FRel->Get("heElectronsOrigCh3");
+  El_on_ElCh[3] = (TH1D*)FRel->Get("heElectronsOrigCh4");
+  El_on_ElCh[4] = (TH1D*)FRel->Get("heElectronsOrigCh5");
+  El_on_ElCh[5] = (TH1D*)FRel->Get("heElectronsOrigCh6");
+  El_on_ElCh[6] = (TH1D*)FRel->Get("heElectronsOrigCh7");
+
+  for (i = 0; i < 7; ++i){
+    El_on_ElCh[i]->GetXaxis()->SetRangeUser(0,5);
+    El_on_ElCh[i]->GetXaxis()->SetTitle("Electron primary energy (MeV)");
+    El_on_ElCh[i]->GetYaxis()->SetTitleOffset(0.7);
+
+
+    El_on_ElCh[i]->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+    //El_on_ElCh[i]->GetYaxis()->SetTitleOffset(0.7);
+    El_on_ElCh[i]->GetYaxis()->SetTitleOffset(1);
+  }
+
+///////////////////////////////////////////// GSTYLE
+/*       */  gStyle->SetOptStat(0);
+/*       */  gStyle->SetOptTitle(1);
+/*       */  //gStyle->SetOptTitle(3);
+/*       */  //gStyle->SetEndErrorSize(1);
+/*       */  //gStyle->SetErrorX(0.5);
+/*       */  gStyle->SetHistLineStyle(1);
+/*       */      //El_on_ElCh[i]->SetHistFillColor(1);
+//////////////////////////////////////////////
+
+  El_on_ElCh[0]->SetTitle("Response function of 'electron channel 1' to incoming electrons");
+  El_on_ElCh[1]->SetTitle("Response function of 'electron channel 2' to incoming electrons");
+  El_on_ElCh[2]->SetTitle("Response function of 'electron channel 3' to incoming electrons");
+  El_on_ElCh[3]->SetTitle("Response function of 'electron channel 4' to incoming electrons");
+  El_on_ElCh[4]->SetTitle("Response function of 'electron channel 5' to incoming electrons");
+  El_on_ElCh[5]->SetTitle("Response function of 'electron channel 6' to incoming electrons");
+  El_on_ElCh[6]->SetTitle("Response function of 'electron channel 7' to incoming electrons");
+
+
+  ////////////////////////////
+ ///////// Protoes //////////
+////////////////////////////
+
+  TFile *FRpr = new TFile("/home/cosmo/maximo/rootstuff/funcao_resposta/test_Protons_RFToT_2.root");
+
+  Pr_on_PrCh[0] = (TH1D*)FRpr->Get("heProtonsOrigCh1");
+  Pr_on_PrCh[1] = (TH1D*)FRpr->Get("heProtonsOrigCh2");
+  Pr_on_PrCh[2] = (TH1D*)FRpr->Get("heProtonsOrigCh3");
+  Pr_on_PrCh[3] = (TH1D*)FRpr->Get("heProtonsOrigCh4");
+  Pr_on_PrCh[4] = (TH1D*)FRpr->Get("heProtonsOrigCh5");
+  Pr_on_PrCh[5] = (TH1D*)FRpr->Get("heProtonsOrigCh6");
+  Pr_on_PrCh[6] = (TH1D*)FRpr->Get("heProtonsOrigCh7");
+  Pr_on_PrCh[7] = (TH1D*)FRpr->Get("heProtonsOrigCh8");
+  Pr_on_PrCh[8] = (TH1D*)FRpr->Get("heProtonsOrigCh9");
+  Pr_on_PrCh[9] = (TH1D*)FRpr->Get("heProtonsOrigCh10");
+
+
+  for (i = 0; i < 10; ++i){
+    Pr_on_PrCh[i]->GetXaxis()->SetRangeUser(0,200);
+    Pr_on_PrCh[i]->GetXaxis()->SetTitle("Proton primary energy (MeV)");
+    Pr_on_PrCh[i]->GetYaxis()->SetTitleOffset(0.7);
+	
+    Pr_on_PrCh[i]->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+    //Pr_on_PrCh[i]->GetYaxis()->SetTitleOffset(0.7);
+    Pr_on_PrCh[i]->GetYaxis()->SetTitleOffset(1);
+  }
+
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(1);
+  //gStyle->SetOptTitle(3);
+  gStyle->SetEndErrorSize(1);gStyle->SetErrorX(0.5);
+
+  Pr_on_PrCh[0]->SetTitle("Response function of 'proton channel 1' to incoming protons");
+  Pr_on_PrCh[1]->SetTitle("Response function of 'proton channel 2' to incoming protons");
+  Pr_on_PrCh[2]->SetTitle("Response function of 'proton channel 3' to incoming protons");
+  Pr_on_PrCh[3]->SetTitle("Response function of 'proton channel 4' to incoming protons");
+  Pr_on_PrCh[4]->SetTitle("Response function of 'proton channel 5' to incoming protons");
+  Pr_on_PrCh[5]->SetTitle("Response function of 'proton channel 6' to incoming protons");
+  Pr_on_PrCh[6]->SetTitle("Response function of 'proton channel 7' to incoming protons");
+  Pr_on_PrCh[7]->SetTitle("Response function of 'proton channel 8' to incoming protons");
+  Pr_on_PrCh[8]->SetTitle("Response function of 'proton channel 9' to incoming protons");
+  Pr_on_PrCh[9]->SetTitle("Response function of 'proton channel 10' to incoming protons");
+
+}
+
+void Single_FR(char particle, int Ch = 1){//(/*bool Save = false,*/ bool multi = false){
+
+  //printf("Loading MFS template...");
+  //gROOT->LoadMacro("MFSTemplate.C");
+  //printf(" [LOADED]\n");
+
+  --Ch;
+
+  TCanvas *c1 = new TCanvas ("FRs","histos-FR", 700,500);
+
+  //c1->SetGrid();
+  c1->SetLogy();
+
+//////// Draw ////////
+
+  if (particle == part_el){
+  //if (strcmp(particle[0],part_el[0]) == 0)
+    gROOT->ForceStyle(); // <--------------------<<<<-
+    El_on_ElCh[Ch]->UseCurrentStyle(); // <--------------------<<<<-
+    El_on_ElCh[Ch]->Draw();
+  }
+
+  else if (particle == part_pr)
+  //else if (strcmp(particle[0],part_pr[0]) == 0)
+    Pr_on_PrCh[Ch]->Draw();
+
+  else
+    help();
+    //cout << "Escreve ('e',x) ou ('p',x) para ver o canal x de e- ou p+" << endl;
+
+}
+  //heProtonsOrigCh9->SetTitleOffset(0.7);
+
+
+
+void Multi_FRs(char particle){//, TH1D *Pr_on_PrCh[10], TH1D *El_on_ElCh[7]){
+
+  TCanvas *c1 = new TCanvas ("FRs","histos-FR", 700,500);
+
+  //c1->SetGrid();
+  c1->SetLogy();
+
+  THStack *hs = new THStack("hs","");
+
+  /*heElectronsOrigCh1->SetLineColor(kRed);
+  heElectronsOrigCh2->SetLineColor(kBlue);
+  heElectronsOrigCh3->SetLineColor(kGreen);
+  heElectronsOrigCh4->SetLineColor(kBlack);
+  heElectronsOrigCh5->SetLineColor(kOrange);
+  heElectronsOrigCh6->SetLineColor(kTeal);
+  heElectronsOrigCh7->SetLineColor(kMagenta);*/
+
+  /*
+  // Isto tudo so para definir o range... -.-'
+  heElectronsOrigCh1->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh1->GetXaxis()->SetTitle("Electron primary energy (MeV)");
+  heElectronsOrigCh1->GetYaxis()->SetTitleOffset(0.7);
+	
+  heElectronsOrigCh1->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+  //heElectronsOrigCh1->GetYaxis()->SetTitleOffset(0.7);
+  heElectronsOrigCh1->GetYaxis()->SetTitleOffset(1);
+
+  heElectronsOrigCh2->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh2->GetXaxis()->SetTitle("Electron primary energy (MeV)");
+  heElectronsOrigCh2->GetYaxis()->SetTitleOffset(0.7);
+	
+  heElectronsOrigCh2->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+  //heElectronsOrigCh1->GetYaxis()->SetTitleOffset(0.7);
+  heElectronsOrigCh2->GetYaxis()->SetTitleOffset(1);
+
+  heElectronsOrigCh3->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh4->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh5->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh6->GetXaxis()->SetRangeUser(0,200);
+  heElectronsOrigCh7->GetXaxis()->SetRangeUser(0,200);
+
+  hs->Add(heElectronsOrigCh1); // Importa o eixo e apresenta pontos
+  hs->Add(heElectronsOrigCh2);
+  hs->Add(heElectronsOrigCh3);
+  hs->Add(heElectronsOrigCh4);
+  hs->Add(heElectronsOrigCh5);
+  hs->Add(heElectronsOrigCh6);
+  hs->Add(heElectronsOrigCh7);*/
+
+
+//////// Draw ////////
+
+  if (particle == part_el){
+
+    El_on_ElCh[0]->SetLineColor(kRed);
+    El_on_ElCh[1]->SetLineColor(kBlue);
+    El_on_ElCh[2]->SetLineColor(kGreen);
+    El_on_ElCh[3]->SetLineColor(kBlack);
+    El_on_ElCh[4]->SetLineColor(kOrange);
+    El_on_ElCh[5]->SetLineColor(kTeal);
+    El_on_ElCh[6]->SetLineColor(kMagenta);
+
+    for (i = 0; i < 7; ++i){
+      //El_on_ElCh[i]->UseCurrentStyle(); // <--------------------<<<<-
+      hs->Add(El_on_ElCh[i]); // (Não Importa o eixo) e apresenta pontos
+    }
+
+    hs->Draw("nostack");
+    hs->GetXaxis()->SetRangeUser(0,5);
+    hs->GetXaxis()->SetTitle("Electron primary energy (MeV)");
+    hs->GetYaxis()->SetTitleOffset(0.7);
+    hs->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+    hs->GetYaxis()->SetTitleOffset(1);
+    hs->Draw("nostack");
+  }
+
+  else if (particle == part_pr){
+
+    Pr_on_PrCh[0]->SetLineColor(kRed);
+    Pr_on_PrCh[1]->SetLineColor(kBlue);
+    Pr_on_PrCh[2]->SetLineColor(kGreen);
+    Pr_on_PrCh[3]->SetLineColor(kBlack);
+    Pr_on_PrCh[4]->SetLineColor(kOrange);
+    Pr_on_PrCh[5]->SetLineColor(kTeal);
+    Pr_on_PrCh[6]->SetLineColor(kMagenta);
+    Pr_on_PrCh[7]->SetLineColor(kSpring);
+    Pr_on_PrCh[8]->SetLineColor(kGray);
+    Pr_on_PrCh[9]->SetLineColor(kYellow);
+
+    for (i = 0; i < 10; ++i)
+      hs->Add(Pr_on_PrCh[i]); // Importa o eixo e apresenta pontos
+
+    hs->Draw("nostack");
+    hs->GetXaxis()->SetRangeUser(0,200);
+    hs->GetXaxis()->SetTitle("Proton primary energy (MeV)");
+    hs->GetYaxis()->SetTitleOffset(0.7);
+    hs->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
+    hs->GetYaxis()->SetTitleOffset(1);
+    hs->Draw("nostack");
+
+  }
+
+  else
+    help();
+    //cout << "Escreve ('e',x) ou ('p',x) para ver o canal x de e- ou p+" << endl;
+
+
+
+  //c1->setGrid();
+  c1->Update();
+	
+}
