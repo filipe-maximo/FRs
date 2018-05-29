@@ -137,12 +137,12 @@ void Single_FR(char particle, int Ch = 1){//(/*bool Save = false,*/ bool multi =
   //if (strcmp(particle[0],part_el[0]) == 0)
     gROOT->ForceStyle(); // <--------------------<<<<-
     El_on_ElCh[Ch]->UseCurrentStyle(); // <--------------------<<<<-
-    El_on_ElCh[Ch]->Draw();
+    El_on_ElCh[Ch]->Draw("HIST L");
   }
 
   else if (particle == part_pr)
   //else if (strcmp(particle[0],part_pr[0]) == 0)
-    Pr_on_PrCh[Ch]->Draw();
+    Pr_on_PrCh[Ch]->Draw("HIST L");
 
   else
     help();
@@ -159,6 +159,7 @@ void Multi_FRs(char particle){//, TH1D *Pr_on_PrCh[10], TH1D *El_on_ElCh[7]){
 
   //c1->SetGrid();
   c1->SetLogy();
+  //c1->SetLogx();
 
   THStack *hs = new THStack("hs","");
 
@@ -226,7 +227,7 @@ void Multi_FRs(char particle){//, TH1D *Pr_on_PrCh[10], TH1D *El_on_ElCh[7]){
     hs->GetYaxis()->SetTitleOffset(0.7);
     hs->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
     hs->GetYaxis()->SetTitleOffset(1);
-    hs->Draw("nostack");
+    hs->Draw("nostack HIST L");
   }
 
   else if (particle == part_pr){
@@ -251,7 +252,7 @@ void Multi_FRs(char particle){//, TH1D *Pr_on_PrCh[10], TH1D *El_on_ElCh[7]){
     hs->GetYaxis()->SetTitleOffset(0.7);
     hs->GetYaxis()->SetTitle("Channel efficiency (sr.cm^{2})");
     hs->GetYaxis()->SetTitleOffset(1);
-    hs->Draw("nostack");
+    hs->Draw("nostack HIST L");
 
   }
 
